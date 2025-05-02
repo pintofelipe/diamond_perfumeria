@@ -32,13 +32,13 @@ function App() {
         </nav>
   
         {/* Contenido principal */}
-        <main className="flex-1 flex items-center justify-center px-6">
+        <main className="flex-1 flex items-center justify-center px-10">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4 text-[#D49C2E]">Bienvenido a Diamond</h1>
-            <p className="text-gray-300 text-lg mb-6">
+            <p className="text-gray-300 text-lg mb-6 fon">
               Encuentra los mejores perfumes de todo el mundo
             </p>
-            <button className="bg-[#D49C2E] text-black font-semibold px-6 py-3 rounded-md hover:bg-[#b38224] transition">
+            <button className="bg-[#D49C2E] text-black font-semibold px-6 py-3 rounded-md hover:bg-[#b38224] transition cursor-pointer" onClick={() => navigate('/Index')}>
               Explorar Ahora
             </button>
           </div>
