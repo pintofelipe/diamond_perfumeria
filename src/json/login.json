@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "email": "juan@gmail.com",
+      "password": "123456",
+      "rol": "admin"
+    },
+    {
+      "id": 2,
+      "email": "garcia.rodrigo@gmail.com",
+      "password": "123456",
+      "rol": "admin"
+    },
+    {
+      "id": 3,
+      "email": "garcia.pedro@gmail.com",
+      "password": "123456",
+      "rol": "admin"
+    }
+  ]
+  
