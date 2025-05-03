@@ -6,7 +6,7 @@ const users = require('../src/json/login.json');
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const result = await pool.query('SELECT * from sia.usuarios where email = $1 and password = $2', [email, password]);
+  // const result = await pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, password]);
   const usuario = users.find(u => u.email === email && u.password === password);
 
   if (usuario) {
