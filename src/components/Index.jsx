@@ -1,59 +1,67 @@
-import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../contexts/CartContext";
 
 function Index() {
-  
+  const { addToCart, cart } = useContext(CartContext); 
   const navigate = useNavigate();
   
   const products = [
     {
       id: 1,
       name: "Cepillo Revlon One S...",
-      price: "$269.900",
+      price: "269.900",
       oldPrice: null,
       image: "/images/cepillo.png",
       top: true,
+      quantity: 1,
     },
     {
       id: 2,
       name: "Parches Contorno de...",
-      price: "$176.000",
+      price: "176.000",
       oldPrice: null,
       image: "/images/parches.png",
-      top: true
+      top: true,
+      quantity: 1,
     },
     {
       id: 3,
       name: "Lattafa Yara EDP for...",
-      price: "$311.998",
-      oldPrice: "$389.998",
+      price: "311.998",
+      oldPrice: "389.998",
       image: "/images/yara.png",
-      top: true
+      top: true,
+      quantity: 1,
     },
     {
       id: 4,
       name: "Perfume Good Girl Bl...",
-      price: "$573.000",
+      price: "573.000",
       oldPrice: null,
       image: "/images/goodgirl.png",
-      top: true
+      top: true,
+      quantity: 1,
     },
     {
       id: 5,
       name: "ICONIC London Lip PL...",
-      price: "$74.500",
-      oldPrice: "$149.000",
+      price: "74.500",
+      oldPrice: "149.000",
       image: "/images/iconic.png",
-      top: true
+      top: true,
+      quantity: 1,
     },
     {
       id: 6,
       name: "Messi Fragrance EDP...",
-      price: "$299.900",
-      oldPrice: "$349.900",
+      price: "299.900",
+      oldPrice: "349.900",
       image: "/images/messi.png",
-      top: true
-    }
-  ]
+      top: true,
+      quantity: 1,
+    },
+  ];
   return (
     <div className="min-h-screen bg-[#1f1f1f] text-white flex flex-col relative">
     {/* Navbar */}
@@ -76,12 +84,22 @@ function Index() {
             <path strokeLinecap="round"strokeLinejoin="round" d="M5.121 17.804A10.95 10.95 0 0112 15c2.45 0 4.71.78 6.879 2.103M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
         </button>
+        <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition relative"onClick={() => navigate("/Cart")}>
+          <svg xmlns="http://www.w3.org/2000/svg"fill="none"viewBox="0 0 24 24"strokeWidth="1.5"stroke="currentColor"className="w-5 h-5 text-[#D49C2E] cursor-pointer">
+            <path strokeLinecap="round"strokeLinejoin="round"d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+          </svg>
+          {cart.length > 0 && (
+            <span className="absolute -top-1 -right-1 bg-[#D49C2E] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {cart.length}
+            </span>
+          )}
+        </button>
       </div>
     </nav>
 
     {/* Contenido principal */}
-    <main className="flex-1 flex items-center justify-center">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto group">
+    <main className="flex-1 flex items-center justify-center m-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto group">
         {products.map((product) => (
           <div
             key={product.id}
@@ -115,8 +133,11 @@ function Index() {
             </div>
             <p className="text-sm text-gray-300">{product.name}</p>
 
-            <button className="mt-4 bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 w-full rounded-lg transition cursor-pointer">
-              🛒 Añadir al carrito
+            <button onClick={() => addToCart(product)} className="flex gap-2 items-center justify-center mt-4 bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 w-full rounded-lg transition cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg"fill="none"viewBox="0 0 24 24"strokeWidth="1.5"stroke="currentColor"className="w-5 text-black h-5 text-[#D49C2E] cursor-pointer">
+                <path strokeLinecap="round"strokeLinejoin="round"d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+              </svg>
+              Añadir al carrito
             </button>
 
             <div className="flex justify-center items-center mt-4 text-yellow-500 text-xl">
