@@ -10,9 +10,7 @@ function Register() {
         <div className="bg-[#1e1e1e] relative w-full h-full flex justify-center items-center">
       
       {/* Logo Header */}
-      <div
-        className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer"
-      >
+      <div className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
         <h1 className="text-4xl italic font-semibold text-[#D49C2E]">Diamond</h1>
         <img src="/Diamond2.png" alt="logo" width={52} height={52} className="text-[#facc15]"/>
       </div>

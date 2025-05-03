@@ -1,22 +1,52 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const onLogin = () => {
-        console.log("Login con:", { email, password,});
-        // Aquí conectas con tu backend o autenticador
-      };
+    const onLogin = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/login',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        });
+    
+        if (response.status === 404) {
+          console.log('Usuario no registrado');
+          return;
+        }
+    
+        if (!response.ok) {
+          throw new Error('Error del servidor');
+        }
+    
+        const data = await response.json();
+        console.log(data.mensaje);
+
+        if (data.mensaje === 'Login exitoso' && data.usuario.rol === 'admin') {
+          console.log('Login exitoso');
+          navigate('/Admin');
+        }else{
+          console.log('Usuario no autorizado');
+          navigate('/Index');
+        }
+       
+
+
+      } catch (error) {
+        console.error('Error al consultar /api/login:', error.message);
+     }
+    };
+    
+    
     
     const loginWithGoogle = () => {
         console.log("Login con Google");
         // Aquí conectas con Google Auth
-    };
-    
-    const navegarMain = () => {
-        console.log("Navegar al Main");
-        // Aquí puedes usar router.push('/main') si usas useRouter de Next.js
     };
 
     const navigate = useNavigate();
@@ -27,13 +57,9 @@ function Login() {
     <div className="bg-[#1e1e1e] relative w-full h-full flex justify-center items-center">
       
       {/* Logo Header */}
-      <div
-        onClick={navegarMain}
-        className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer"
-      >
+      <div onClick={() => navigate('/')} className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer">
         <h1 className="text-4xl italic font-semibold text-[#D49C2E]">Diamond</h1>
-        <img src="/Diamond2.png"alt="logo"width={52}height={52} className="text-[#facc15]"
-        />
+        <img src="/Diamond2.png"alt="logo"width={52}height={52} className="text-[#facc15]"/>
       </div>
 
       {/* SVG Wave */}
@@ -82,7 +108,7 @@ function Login() {
             ¿No tienes una cuenta?
           </p>
           <span>|</span>
-          <p className="text-[#D49C2E] font-semibold italic hover:underline cursor-pointer">
+          <p onClick={() => navigate('/Admin')} className="text-[#D49C2E] font-semibold italic hover:underline cursor-pointer">
             ¿Se te olvidó tu contraseña?
           </p>
         </div>
