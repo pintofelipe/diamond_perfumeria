@@ -14,5 +14,6 @@
     "express": "^5.1.0",
     "pg": "^8.15.6"
   },
+  "devDependencies": {},
   "description": ""
 }

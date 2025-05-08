@@ -42,12 +42,6 @@ function Login() {
      }
     };
     
-    
-    
-    const loginWithGoogle = () => {
-        console.log("Login con Google");
-        // Aquí conectas con Google Auth
-    };
 
     const navigate = useNavigate();
 
@@ -79,7 +73,7 @@ function Login() {
           {/* Email */}
           <div className="mb-4">
             <label className="block text-white font-semibold italic mb-1">
-              Usuario
+              Correo
             </label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic" placeholder="Ingrese su usuario"/>
           </div>
@@ -95,11 +89,6 @@ function Login() {
           {/* Login Button */}
           <button onClick={onLogin} className="w-full bg-[#D49C2E] text-black font-semibold py-2 rounded-lg shadow-md hover:bg-[#fde047] transition cursor-pointer">
             Iniciar Sesión
-          </button>
-  
-          {/* Google Login */}
-          <button onClick={loginWithGoogle} className="w-full bg-[#D49C2E] text-black font-semibold py-2 rounded-lg shadow-md hover:bg-[#fde047] transition cursor-pointer mt-2">
-            Iniciar Sesión con Google
           </button>
   
           {/* Enlaces extra */}
