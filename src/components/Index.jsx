@@ -67,7 +67,7 @@ function Index() {
     {/* Navbar */}
     <nav className="flex items-center justify-between px-6 py-4 bg-transparent">
       {/* Logo + Nombre */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" onClick={() => navigate('/')}>
         <span className="text-4xl italic font-semibold text-[#D49C2E]">Diamond</span>
         <img src="/Diamond2.png" alt="Logo" width={52} height={52} className="text-[#D49C2E]"/>
       </div>

@@ -1,14 +1,14 @@
 [
     {
       "id": 1,
-      "email": "juan@gmail.com",
-      "password": "123456",
+      "email": "afpintou@ufpso.edu.co",
+      "password": "Felipe77",
       "rol": "admin"
     },
     {
       "id": 2,
-      "email": "garcia.rodrigo@gmail.com",
-      "password": "123456",
+      "email": "jjgarciat@ufpso.edu.co",
+      "password": "Gce6pmd040915",
       "rol": "admin"
     },
     {

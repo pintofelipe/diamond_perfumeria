@@ -10,9 +10,7 @@ function Register() {
         <div className="bg-[#1e1e1e] relative w-full h-full flex justify-center items-center">
       
       {/* Logo Header */}
-      <div
-        className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer"
-      >
+      <div className="absolute top-0 w-full p-4 flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
         <h1 className="text-4xl italic font-semibold text-[#D49C2E]">Diamond</h1>
         <img src="/Diamond2.png" alt="logo" width={52} height={52} className="text-[#facc15]"/>
       </div>
@@ -31,12 +29,45 @@ function Register() {
           Registro de Usuario
         </h2>
 
+        {/* Nombres */}
+        <div className="mb-4">
+          <label className="block text-white font-semibold italic mb-1">
+            Nombres
+          </label>
+          <input type='text'
+            className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic"
+            placeholder="Ingrese un correo"
+          />
+        </div>
+
+        {/* Apellidos */}
+        <div className="mb-4">
+          <label className="block text-white font-semibold italic mb-1">
+            Apellidos
+          </label>
+          <input type='text'
+            className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic"
+            placeholder="Ingrese un correo"
+          />
+        </div>
+
+        {/* Telefono */}
+        <div className="mb-4">
+          <label className="block text-white font-semibold italic mb-1">
+            Telefono
+          </label>
+          <input type='text'
+            className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic"
+            placeholder="Ingrese un correo"
+          />
+        </div>
+
         {/* Email */}
         <div className="mb-4">
           <label className="block text-white font-semibold italic mb-1">
-            Correo
+            Email
           </label>
-          <input
+          <input type='email'
             className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic"
             placeholder="Ingrese un correo"
           />
@@ -47,7 +78,7 @@ function Register() {
           <label className="block text-white font-semibold italic mb-1">
             Contraseña
           </label>
-          <input
+          <input type='password'
             className="w-full px-4 py-2 border rounded-lg shadow-2xl focus:ring-2 focus:ring-[#D49C2E] focus:outline-none transition text-amber-50 font-semibold italic"
             placeholder="Ingrese una contraseña"
           />

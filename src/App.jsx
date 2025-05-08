@@ -33,7 +33,7 @@ function App() {
   
         {/* Contenido principal */}
         <main className="flex-1 flex items-center justify-center px-10">
-          <div className="text-center">
+          <div className="text-center z-2">
             <h1 className="text-4xl font-bold mb-4 text-[#D49C2E]">Bienvenido a Diamond</h1>
             <p className="text-gray-300 text-lg mb-6 fon">
               Encuentra los mejores perfumes de todo el mundo
@@ -45,7 +45,7 @@ function App() {
         </main>
   
         {/* Onda inferior */}
-        <div className="absolute bottom-0 w-full">
+        <div className="absolute bottom-0 w-full z-1">
           <svg className="absolute bottom-0 left-0 w-full text-[#D49C2E]"xmlns="http://www.w3.org/2000/svg"viewBox="0 0 1440 320">
             <path fill="currentColor" fillOpacity="1"
             d="M0,256L60,234.7C120,213,240,171,360,170.7C480,171,600,213,720,234.7C840,256,960,256,1080,245.3C1200,235,1320,213,1380,202.7L1440,192V320H1380C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320H0Z"></path>
