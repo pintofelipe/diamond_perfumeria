@@ -1,17 +1,16 @@
-
-
-const express = require('express');
-const cors = require('cors');
-const loginRoutes = require('./login.cjs');
+const express = require("express");
+const cors = require("cors");
+const authRoutes = require("./routes/auth.cjs");
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', loginRoutes);
+// Rutas
+app.use("/api/auth", authRoutes);
 
-app.listen(port, () => {
-  console.log(`Servidor Express corriendo en http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
