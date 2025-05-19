@@ -1,11 +1,32 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, totalPrice } = useContext(CartContext);
   const [errors, setErrors] = useState({});
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  // Revisar si hay una sesion activa
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      // Redirecciona a login si no hay sesion activa
+      navigate("/Login", { state: { from: location.pathname } });
+    }
+  }, [navigate, location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("userRole");
+    setUser(null);
+    navigate("/Login");
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +38,10 @@ const Checkout = () => {
     expirationDate: "",
     cvv: ""
   });
+
+  if (!user) {
+    return null;
+  }
 
   const parsePrice = (price) => {
     if (typeof price === 'string') {
@@ -81,11 +106,30 @@ const Checkout = () => {
           <img src="/Diamond2.png" alt="Logo" width={52} height={52} className="text-[#D49C2E]"/>
         </div>
         <div className="flex items-center gap-4">
-          <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition" onClick={() => navigate("/Login")}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#D49C2E] cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A10.95 10.95 0 0112 15c2.45 0 4.71.78 6.879 2.103M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </button>
+          <div className="relative">
+            <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition flex items-center gap-2"onClick={() => setShowDropdown(!showDropdown)}>
+              <span className="text-[#D49C2E] font-medium px-2">
+                {(user.nombres || user.email.split('@')[0]).toUpperCase()}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#D49C2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-[#2b2b2b] rounded-md shadow-lg z-10 border border-[#D49C2E]">
+                <div className="py-1">
+                  <div className="px-4 py-2 text-sm text-white border-b border-[#D49C2E]">
+                    <p className="font-semibold">{user.nombres} {user.apellidos}</p>
+                    <p className="text-gray-400 truncate">{user.email}</p>
+                  </div>
+                  <button onClick={handleLogout}className="block w-full px-4 py-2 text-sm text-white hover:bg-[#D49C2E] hover:text-black text-left">
+                    Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 

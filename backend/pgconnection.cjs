@@ -1,30 +1,17 @@
-const express = require('express');
-const cors = require('cors');
-const { Pool } = require('pg');
-
-const app = express();
-const port = 3001;
-app.use(cors());
-app.use(express.json());
+const { Pool } = require("pg");
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'pinto77',
-  port: 5432,
+  user: "postgres",
+  host: "127.0.0.1",
+  database: "diamond_db",
+  password: "meza21",
+  port: 5433,
+  schema: "diamond", 
 });
 
-app.get('/api/test', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error al conectar a PostgreSQL:', err.message);
-    res.status(500).send('Error en la conexión con PostgreSQL');
-  }
-});
-  
-  app.listen(port, () => {
-    console.log('Servidor corriendo en puerto 3001');
-  });
+pool
+  .query("SELECT NOW()")
+  .then(() => console.log("✔ PostgreSQL conectado"))
+  .catch((err) => console.error("✖ Error de PostgreSQL:", err));
+
+module.exports = pool;

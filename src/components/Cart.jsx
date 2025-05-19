@@ -1,10 +1,35 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart, updateQuantity, clearCart, totalItems, totalPrice } = useContext(CartContext);
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  // Revisar si hay una sesion activa
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      // Redirecciona a login si no hay sesion activa
+      navigate("/Login", { state: { from: location.pathname } });
+    }
+  }, [navigate, location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("userRole");
+    setUser(null);
+    navigate("/Login");
+  };
+
+  if (!user) {
+    return null;
+  }
 
   const parsePrice = (price) => {
     if (typeof price === 'string') {
@@ -42,13 +67,32 @@ const Cart = () => {
           <img src="/Diamond2.png" alt="Logo" width={52} height={52} className="text-[#D49C2E]"/>
         </div>
 
-        <div className="flex items-center gap-4">
-          <input type="text" placeholder="Buscar..." className="px-4 py-2 rounded-md bg-[#2b2b2b] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-[#D49C2E]"/>
-          <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition" onClick={() => navigate("/Login")}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#D49C2E] cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A10.95 10.95 0 0112 15c2.45 0 4.71.78 6.879 2.103M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </button>
+        <div className="flex items-center gap-4">          
+          <div className="relative">
+            <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition flex items-center gap-2"onClick={() => setShowDropdown(!showDropdown)}>
+              <span className="text-[#D49C2E] font-medium px-2">
+                {(user.nombres || user.email.split('@')[0]).toUpperCase()}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#D49C2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-[#2b2b2b] rounded-md shadow-lg z-10 border border-[#D49C2E]">
+                <div className="py-1">
+                  <div className="px-4 py-2 text-sm text-white border-b border-[#D49C2E]">
+                    <p className="font-semibold">{user.nombres} {user.apellidos}</p>
+                    <p className="text-gray-400 truncate">{user.email}</p>
+                  </div>
+                  <button onClick={handleLogout}className="block w-full px-4 py-2 text-sm text-white hover:bg-[#D49C2E] hover:text-black text-left">
+                    Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition relative" onClick={() => navigate("/Cart")}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-[#D49C2E] cursor-pointer">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
