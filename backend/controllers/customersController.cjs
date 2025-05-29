@@ -100,7 +100,7 @@ const crearCliente = async (req, res) => {
 // Actualizar cliente
 const actualizarCliente = async (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, phone, email, password, role } = req.body;
+  const { first_name, last_name, phone, email, role } = req.body;
 
   if (!first_name || !last_name || !email) {
     return res.status(400).json({ error: "Faltan campos requeridos" });
@@ -114,11 +114,9 @@ const actualizarCliente = async (req, res) => {
     );
 
     if (emailCheck.rows.length > 0) {
-      return res
-        .status(400)
-        .json({
-          error: "El correo electrónico ya está registrado en otro cliente",
-        });
+      return res.status(400).json({
+        error: "El correo electrónico ya está registrado en otro cliente",
+      });
     }
 
     // Obtener cliente actual
@@ -131,25 +129,14 @@ const actualizarCliente = async (req, res) => {
       return res.status(404).json({ error: "Cliente no encontrado" });
     }
 
-    let query;
-    let params;
+    // Actualizar sin modificar la contraseña
+    const query = `UPDATE DIAMOND.CUSTOMERS 
+                   SET first_name = $1, last_name = $2, phone = $3, 
+                       email = $4, role = $5
+                   WHERE id_customer = $6
+                   RETURNING id_customer, first_name, last_name, phone, email, role`;
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      query = `UPDATE DIAMOND.CUSTOMERS 
-               SET first_name = $1, last_name = $2, phone = $3, 
-                   email = $4, password = $5, role = $6
-               WHERE id_customer = $7
-               RETURNING id_customer, first_name, last_name, phone, email, role`;
-      params = [first_name, last_name, phone, email, hashedPassword, role, id];
-    } else {
-      query = `UPDATE DIAMOND.CUSTOMERS 
-               SET first_name = $1, last_name = $2, phone = $3, 
-                   email = $4, role = $5
-               WHERE id_customer = $6
-               RETURNING id_customer, first_name, last_name, phone, email, role`;
-      params = [first_name, last_name, phone, email, role, id];
-    }
+    const params = [first_name, last_name, phone, email, role, id];
 
     const result = await pool.query(query, params);
 

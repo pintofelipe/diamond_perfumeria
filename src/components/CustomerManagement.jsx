@@ -129,14 +129,19 @@ function GestionClientes() {
 
       const metodo = idEditando ? "PUT" : "POST";
 
+      // Crear objeto sin contraseña si es edición
       const datosParaEnviar = {
         first_name: datosFormulario.nombre,
         last_name: datosFormulario.apellido,
         email: datosFormulario.correo,
         phone: datosFormulario.telefono,
-        password: datosFormulario.contrasena,
         role: datosFormulario.rol,
       };
+
+      // Solo agregar contraseña si es un nuevo cliente
+      if (!idEditando) {
+        datosParaEnviar.password = datosFormulario.contrasena;
+      }
 
       const respuesta = await fetch(url, {
         method: metodo,
@@ -291,24 +296,26 @@ function GestionClientes() {
                 )}
               </div>
 
-              <div>
-                <input type="password"name="contrasena"value={datosFormulario.contrasena}onChange={manejarCambio}placeholder="Contraseña"
-                  className={`w-full p-2 rounded bg-[#1f1f1f] text-white ${
-                    erroresValidacion.contrasena ? "border border-red-500" : ""
-                  }`}
-                  required={!idEditando}
-                />
-                {erroresValidacion.contrasena && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {erroresValidacion.contrasena}
-                  </p>
-                )}
-                {idEditando && (
-                  <p className="text-gray-400 text-sm mt-1">
-                    Dejar en blanco para mantener la contraseña actual
-                  </p>
-                )}
-              </div>
+              {!idEditando && (
+                <div>
+                  <input 
+                    type="password"
+                    name="contrasena"
+                    value={datosFormulario.contrasena}
+                    onChange={manejarCambio}
+                    placeholder="Contraseña"
+                    className={`w-full p-2 rounded bg-[#1f1f1f] text-white ${
+                      erroresValidacion.contrasena ? "border border-red-500" : ""
+                    }`}
+                    required
+                  />
+                  {erroresValidacion.contrasena && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {erroresValidacion.contrasena}
+                    </p>
+                  )}
+                </div>
+              )}
 
               <div>
                 <select name="rol"value={datosFormulario.rol}onChange={manejarCambio}className="w-full p-2 rounded bg-[#1f1f1f] text-white"><option value="Cliente">Cliente</option>
