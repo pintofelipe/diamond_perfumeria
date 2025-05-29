@@ -9,13 +9,25 @@ const Confirmation = () => {
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Revisar si hay una sesion activa
+  // Revisar si hay una sesión activa
   useEffect(() => {
     const userData = localStorage.getItem("userData");
     if (userData) {
-      setUser(JSON.parse(userData));
+      try {
+        const parsedUser = JSON.parse(userData);
+
+        const normalizedUser = {
+          ...parsedUser,
+          nombre: parsedUser.first_name, // Alias para compatibilidad
+          apellido: parsedUser.last_name,
+        };
+        setUser(normalizedUser);
+      } catch (error) {
+        console.error(error);
+        // Redirecciona a login si no hay sesión activa
+        navigate("/Login", { state: { from: location.pathname } });
+      }
     } else {
-      // Redirecciona a login si no hay sesion activa
       navigate("/Login", { state: { from: location.pathname } });
     }
   }, [navigate, location]);
@@ -77,7 +89,7 @@ const Confirmation = () => {
           <div className="relative">
             <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition flex items-center gap-2"onClick={() => setShowDropdown(!showDropdown)}>
               <span className="text-[#D49C2E] font-medium px-2">
-                {(user.nombres || user.email.split('@')[0]).toUpperCase()}
+                {(user.nombre || user.email.split('@')[0]).toUpperCase()}
               </span>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#D49C2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -88,7 +100,7 @@ const Confirmation = () => {
               <div className="absolute right-0 mt-2 w-48 bg-[#2b2b2b] rounded-md shadow-lg z-10 border border-[#D49C2E]">
                 <div className="py-1">
                   <div className="px-4 py-2 text-sm text-white border-b border-[#D49C2E]">
-                    <p className="font-semibold">{user.nombres} {user.apellidos}</p>
+                    <p className="font-semibold">{user.nombre} {user.apellido}</p>
                     <p className="text-gray-400 truncate">{user.email}</p>
                   </div>
                   <button onClick={handleLogout}className="block w-full px-4 py-2 text-sm text-white hover:bg-[#D49C2E] hover:text-black text-left">

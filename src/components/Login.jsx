@@ -40,7 +40,7 @@ function Login() {
         return;
       }
 
-      if (data.usuario.rol === "Admin") {
+      if (data.usuario.role === "Admin") {
         navigate("/Admin");
         localStorage.setItem("userRole", "admin");
         localStorage.setItem("userData", JSON.stringify(data.usuario));
