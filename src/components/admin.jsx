@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomerManagement from "./CustomerManagement";
+import OrderManagement from "./OrderManagement";
 
 function Admin() {
   const [currentSection, setCurrentSection] = useState("productos");
@@ -49,23 +50,46 @@ function Admin() {
         {/* Logo Header */}
         <div className="absolute top-0 w-full p-4 flex items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer"onClick={() => navigate("/")}>
+          <div
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <h1 className="text-4xl italic font-semibold text-[#D49C2E]">
               Diamond
             </h1>
-            <img src="/Diamond2.png"alt="logo"width={52}height={52}className="text-[#facc15]"/>
+            <img
+              src="/Diamond2.png"
+              alt="logo"
+              width={52}
+              height={52}
+              className="text-[#facc15]"
+            />
           </div>
 
           {/* user buttons */}
           <div className="flex items-center gap-4 ml-auto">
             {/* User Dropdown */}
             <div className="relative">
-              <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition flex items-center gap-2"onClick={() => setShowDropdown(!showDropdown)}>
+              <button
+                className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition flex items-center gap-2"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
                 <span className="text-[#D49C2E] font-medium px-2">
                   {user.nombre?.toUpperCase() || "USUARIO"}
                 </span>
-                <svg xmlns="http://www.w3.org/2000/svg"className="w-5 h-5 text-[#D49C2E]"fill="none"viewBox="0 0 24 24"stroke="currentColor"strokeWidth={2}>
-                  <path strokeLinecap="round"strokeLinejoin="round"d="M19 9l-7 7-7-7"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-[#D49C2E]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
@@ -78,7 +102,10 @@ function Admin() {
                       </p>
                       <p className="text-gray-400 truncate">{user.email}</p>
                     </div>
-                    <button onClick={handleLogout}className="block w-full px-4 py-2 text-sm text-white hover:bg-[#D49C2E] hover:text-black text-left">
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-4 py-2 text-sm text-white hover:bg-[#D49C2E] hover:text-black text-left"
+                    >
                       Cerrar sesión
                     </button>
                   </div>
@@ -129,11 +156,7 @@ function Admin() {
               Gestión de productos (en desarrollo)
             </div>
           )}
-          {currentSection === "ventas" && (
-            <div className="text-white">
-              Gestión de ventas (en desarrollo)
-            </div>
-          )}
+          {currentSection === "ventas" && <OrderManagement />}
           {currentSection === "clientes" && <CustomerManagement />}
         </div>
       </div>

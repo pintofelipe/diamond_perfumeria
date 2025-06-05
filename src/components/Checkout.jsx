@@ -96,12 +96,59 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateFields()) return;
-    setTimeout(() => {
-      navigate("/Confirmation");
-    }, 1000);
+
+    if (!validateFields()) {
+      return;
+    }
+
+    try {
+      const orderData = {
+        user_id: user.id_customer, 
+        customer_name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        payment_method: formData.paymentMethod,
+        card_number: formData.paymentMethod === "credit-card" ? formData.cardNumber : null,
+        expiration_date: formData.paymentMethod === "credit-card"? formData.expirationDate : null,
+        cvv: formData.paymentMethod === "credit-card" ? formData.cvv : null,
+        subtotal: subtotal,
+        shipping: shipping,
+        total: total,
+        items: cart.map((item) => ({
+          product_id: item.id,
+          product_name: item.name,
+          product_image: item.image,
+          price: parsePrice(item.price),
+          old_price: item.oldPrice ? parsePrice(item.oldPrice) : null,
+          quantity: item.quantity,
+        })),
+      };
+      
+      const response = await fetch("http://localhost:3000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error del servidor:", errorData);
+        throw new Error(errorData.error || "Error al procesar la orden"); // Cambiado a errorData.error
+      }
+
+      if (!validateFields()) return;
+      setTimeout(() => {
+        navigate("/Confirmation");
+      }, 1000);
+    } catch (error) {
+      console.error("Error completo:", error);
+      alert(`Error: ${error.message}`);
+    }
   };
 
   const handleInputChange = (e) => {
