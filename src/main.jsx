@@ -5,7 +5,7 @@ import { CartProvider } from "./contexts/CartProvider.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Cart from "./components/Cart.jsx";
-import Index from "./components/index.jsx";
+import Index from "./components/Index.jsx";
 import Checkout from "./components/Checkout.jsx";
 import Confirmation from "./components/Confirmation.jsx";
 import Admin from "./components/admin.jsx";
