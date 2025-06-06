@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 const GestionOrdenes = () => {
   const [ordenes, setOrdenes] = useState([]);
@@ -51,24 +52,66 @@ const GestionOrdenes = () => {
   const manejarEliminacion = async (id) => {
     const orden = ordenes.find((o) => o.id_order === id);
 
+    // Verificación de estado
     if (orden.status !== "cancelled") {
-      alert("Solo se pueden eliminar órdenes con estado 'Cancelado'");
+      await Swal.fire({
+        title: "Acción no permitida",
+        text: "Solo se pueden eliminar órdenes con estado 'Cancelado'",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        background: "#2a2a2a",
+        color: "#ffffff",
+      });
       return;
     }
 
-    if (!window.confirm("¿Estás seguro de eliminar esta orden cancelada?"))
-      return;
+    // Confirmación de eliminación
+    const { isConfirmed } = await Swal.fire({
+      title: `¿Eliminar orden #${orden.id_order}?`,
+      text: "¡Esta acción no se puede deshacer!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      background: "#2a2a2a",
+      color: "#ffffff",
+      customClass: {
+        htmlContainer: "text-left",
+      },
+    });
+
+    if (!isConfirmed) return;
 
     try {
       const respuesta = await fetch(`http://localhost:3000/api/cart/${id}`, {
         method: "DELETE",
       });
+
       if (!respuesta.ok) throw new Error("Error al eliminar orden");
 
       setOrdenes(ordenes.filter((o) => o.id_order !== id));
       setOrdenesFiltradas(ordenesFiltradas.filter((o) => o.id_order !== id));
+
+      // Notificación de éxito
+      await Swal.fire({
+        title: "¡Eliminada!",
+        text: "La orden ha sido eliminada correctamente",
+        icon: "success",
+        background: "#2a2a2a",
+        color: "#ffffff",
+        timer: 1000,
+        showConfirmButton: false,
+      });
     } catch (err) {
-      setError(err.message);
+      await Swal.fire({
+        title: "Error",
+        text: err.message,
+        icon: "error",
+        background: "#2a2a2a",
+        color: "#ffffff",
+      });
     }
   };
 
@@ -189,7 +232,7 @@ const GestionOrdenes = () => {
       ) : (
         <div>
           <h3 className="text-xl font-semibold mb-3 text-[#D49C2E]">
-            Todas las Órdenes ({ordenes.length})
+            Todas las órdenes ({ordenes.length})
           </h3>
           {ordenes.length === 0 ? (
             <p className="text-white text-center">No hay órdenes registradas</p>
