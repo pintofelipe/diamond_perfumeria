@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomerManagement from "./CustomerManagement";
 import OrderManagement from "./OrderManagement";
+import ProductManagement from "./ProductManagement.jsx";
 
 function Admin() {
   const [currentSection, setCurrentSection] = useState("productos");
@@ -151,11 +152,7 @@ function Admin() {
 
         {/* Content Area */}
         <div className="mt-40 w-full flex justify-center">
-          {currentSection === "productos" && (
-            <div className="text-white">
-              Gestión de productos (en desarrollo)
-            </div>
-          )}
+          {currentSection === "productos" && <ProductManagement />}
           {currentSection === "ventas" && <OrderManagement />}
           {currentSection === "clientes" && <CustomerManagement />}
         </div>

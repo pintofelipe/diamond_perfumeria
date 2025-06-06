@@ -127,10 +127,6 @@ function Login() {
             <p onClick={() => navigate("/Register")}className="text-[#D49C2E] font-semibold italic hover:underline cursor-pointer">
               ¿No tienes una cuenta?
             </p>
-            <span>|</span>
-            <p onClick={() => navigate("/Admin")}className="text-[#D49C2E] font-semibold italic hover:underline cursor-pointer">
-              ¿Se te olvidó tu contraseña?
-            </p>
           </div>
         </div>
       </div>
