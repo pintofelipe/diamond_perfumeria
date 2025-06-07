@@ -2,11 +2,11 @@ const { Pool } = require("pg");
 
 const pool = new Pool({
   user: "postgres",
-  host: "localhost",
-  database: "postgres",
-  password: "0409156",
-  port: 5432,
-  schema: "diamond", 
+  host: "127.0.0.1",
+  database: "diamond_db",
+  password: "meza21",
+  port: 5433,
+  schema: "diamond",
 });
 
 pool

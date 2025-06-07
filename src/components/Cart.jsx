@@ -134,7 +134,7 @@ const Cart = () => {
           ) : (
             <div className="space-y-6">
               {cart.map((product) => (
-                <div key={product.id} className="flex items-center gap-4 pb-6 border-b border-gray-700">
+                <div key={product.id_product} className="flex items-center gap-4 pb-6 border-b border-gray-700">
                   <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-md"/>
                   <div className="flex-grow">
                     <h3 className="font-medium">{product.name}</h3>
@@ -146,19 +146,19 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => updateQuantity(product.id, product.quantity - 1)} className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer p-1 rounded-md bg-[#3a3a3a] hover:bg-[#4a4a4a]">
+                    <button onClick={() => updateQuantity(product.id_product, product.quantity - 1)} className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer p-1 rounded-md bg-[#3a3a3a] hover:bg-[#4a4a4a]">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5 12H19" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                       </svg>
                     </button>
                     <span className="text-white">{product.quantity}</span>
-                    <button onClick={() => updateQuantity(product.id, product.quantity + 1)} className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer p-1 rounded-md bg-[#3a3a3a] hover:bg-[#4a4a4a]">
+                    <button onClick={() => updateQuantity(product.id_product, product.quantity + 1)} className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer p-1 rounded-md bg-[#3a3a3a] hover:bg-[#4a4a4a]">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 5V19M5 12H19" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                       </svg>
                     </button>
                   </div>
-                  <button onClick={() => removeFromCart(product.id)} className="cursor-pointer p-1 text-gray-400 hover:text-white">
+                  <button onClick={() => removeFromCart(product.id_product)} className="cursor-pointer p-1 text-gray-400 hover:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>

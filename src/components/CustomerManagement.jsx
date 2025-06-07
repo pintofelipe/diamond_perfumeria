@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 function GestionClientes() {
   const [clientes, setClientes] = useState([]);
@@ -207,7 +208,26 @@ function GestionClientes() {
   };
 
   const manejarEliminacion = async (id) => {
-    if (!window.confirm("¿Estás seguro de eliminar este cliente?")) return;
+    const clienteAEliminar = clientes.find((c) => c.id_customer === id);
+
+    const { isConfirmed } = await Swal.fire({
+      title: `¿Eliminar a ${clienteAEliminar.first_name} ${clienteAEliminar.last_name}?`,
+      text: "¡Esta acción no se puede deshacer!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      background: "#2a2a2a",
+      color: "#ffffff",
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+      },
+    });
+
+    if (!isConfirmed) return;
 
     try {
       const respuesta = await fetch(
@@ -216,14 +236,32 @@ function GestionClientes() {
           method: "DELETE",
         }
       );
+
       if (!respuesta.ok) throw new Error("Error al eliminar cliente");
 
       setClientes(clientes.filter((c) => c.id_customer !== id));
       setClientesFiltrados(
         clientesFiltrados.filter((c) => c.id_customer !== id)
       );
+
+      // Notificación de éxito
+      Swal.fire({
+        title: "¡Eliminado!",
+        text: "El cliente ha sido eliminado correctamente",
+        icon: "success",
+        background: "#2a2a2a",
+        color: "#ffffff",
+        timer: 1000,
+        showConfirmButton: false,
+      });
     } catch (err) {
-      setError(err.message);
+      Swal.fire({
+        title: "Error",
+        text: err.message,
+        icon: "error",
+        background: "#2a2a2a",
+        color: "#ffffff",
+      });
     }
   };
 

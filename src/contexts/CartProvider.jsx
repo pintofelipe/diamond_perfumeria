@@ -19,10 +19,12 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
+      const existingItem = prevCart.find(
+        (item) => item.id_product === product.id_product
+      );
       if (existingItem) {
         return prevCart.map((item) =>
-          item.id === product.id
+          item.id_product === product.id_product
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -32,7 +34,9 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.id_product !== productId)
+    );
   };
 
   const updateQuantity = (productId, newQuantity) => {
@@ -42,7 +46,7 @@ export const CartProvider = ({ children }) => {
     }
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        item.id_product === productId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
@@ -52,6 +56,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   const totalPrice = cart.reduce((sum, item) => {
     const precioLimpio =
       typeof item.price === "string"

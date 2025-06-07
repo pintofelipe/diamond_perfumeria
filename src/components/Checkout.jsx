@@ -105,20 +105,20 @@ const Checkout = () => {
 
     try {
       const orderData = {
-        user_id: user.id_customer, 
+        user_id: user.id_customer,
         customer_name: formData.name,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
         payment_method: formData.paymentMethod,
         card_number: formData.paymentMethod === "credit-card" ? formData.cardNumber : null,
-        expiration_date: formData.paymentMethod === "credit-card"? formData.expirationDate : null,
+        expiration_date: formData.paymentMethod === "credit-card" ? formData.expirationDate : null,
         cvv: formData.paymentMethod === "credit-card" ? formData.cvv : null,
         subtotal: subtotal,
         shipping: shipping,
         total: total,
         items: cart.map((item) => ({
-          product_id: item.id,
+          product_id: item.id_product,
           product_name: item.name,
           product_image: item.image,
           price: parsePrice(item.price),

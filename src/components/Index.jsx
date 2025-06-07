@@ -39,9 +39,25 @@ function Index() {
   useEffect(() => {
     fetch("http://localhost:3000/api/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) =>
+        setProducts(data.map((p) => ({ ...p, price: p.current_price })))
+      )
       .catch((err) => console.error("Error fetching products:", err));
   }, []);
+
+  const formatCOP = (value) => value.toLocaleString("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  const parsePrice = (price) => {
+    if (typeof price === "string") {
+      return parseFloat(price.replace(/\./g, "")) || 0;
+    }
+    return price || 0;
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("userData");
@@ -121,12 +137,12 @@ function Index() {
             )}
           </div>
           {/* Cart Button */}
-          <button onClick={() => navigate("/Cart")} className="relative">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-[#D49C2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h14l1-5H6.4M7 13l-1 5h13M7 13L5.4 5H21" />
+          <button className="p-2 rounded-full bg-[#2b2b2b] border border-gray-600 hover:bg-[#3a3a3a] transition relative" onClick={() => navigate("/Cart")}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-[#D49C2E] cursor-pointer">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
             </svg>
             {cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-[#D49C2E] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#D49C2E] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                 {cart.length}
               </span>
             )}
@@ -137,15 +153,31 @@ function Index() {
       {/* Inventory */}
       <main className="flex justify-center px-6 py-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl w-full group">
-          {products.map((product, i) => (
+          {products.map((product) => (
             <motion.div
               key={product.id_product}
               whileHover={{ scale: 1.05 }}
               className="bg-[#2a2a2a] rounded-2xl p-4 shadow-lg transition-all duration-300 cursor-pointer group-hover:opacity-90"
             >
-              <div className="w-full h-48 bg-[#1f1f1f] rounded mb-4" />
+              {/* Mostrar la imagen del producto */}
+              <div className="w-full h-48 bg-[#1f1f1f] rounded mb-4 overflow-hidden">
+                {product.image ? (
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+              
               <h3 className="text-white font-semibold text-lg mb-1">{product.name}</h3>
-              <p className="text-sm text-white mb-1">Precio: ${product.current_price}</p>
+              <p className="text-sm text-white mb-1">Precio: {formatCOP(parsePrice(product.price))}</p>
               <p className="text-xs italic text-gray-400 mb-4">{product.description}</p>
               <button
                 onClick={() => addToCart(product)}
